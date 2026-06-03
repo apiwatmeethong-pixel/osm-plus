@@ -719,19 +719,22 @@
       document.getElementById('app-container').style.display = 'none';
     }
 
-    // ฟังก์ชันยิงข้อมูลไปหา Apps Script (แทน google.script.run ตัวเก่า)
-    async function callAPI(payload) {
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
-        });
-        return await response.json();
-      } catch (error) {
-        throw new Error("การเชื่อมต่อล้มเหลว: " + error.message);
-      }
-    }
+    // ฟังก์ชันยิงข้อมูลไปหา Apps Script
+async function callAPI(payload) {
+  // 🛡️ แนบรหัสลับเข้าไปในทุก payload ก่อนส่ง
+  payload.secret = "MyVerySecretKey2026"; // 👈 ต้องตรงกับใน Code.gs
+  
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+    return await response.json();
+  } catch (error) {
+    throw new Error("การเชื่อมต่อล้มเหลว: " + error.message);
+  }
+}
 
     async function processLogin() {
       const user = document.getElementById('loginUsername').value;
